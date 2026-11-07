@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect , useState} from 'react'
 import thumbnail1 from "../../assets/thumbnail1.png"
 import thumbnail2 from "../../assets/thumbnail2.png"
 import thumbnail3 from "../../assets/thumbnail3.png"
@@ -8,63 +8,38 @@ import thumbnail6 from "../../assets/thumbnail6.png"
 import thumbnail7 from "../../assets/thumbnail7.png"
 import thumbnail8 from "../../assets/thumbnail8.png"
 import {Link} from "react-router-dom"
+import {API_KEY} from "../../data.js"
+import {value_converter} from "../../data.js"
 
-const Feed = () => {
+const Feed = ({category}) => {
+const [data, setData] = useState([])
   const videoname = "text-md font-semibold w-full px-3"
-  const channel = "text-sm w-full px-3"
-  const views ='text-[13px] px-3 w-full'
+  const channel = "text-sm text-gray-400 w-full px-3"
+  const views ='text-[10px] text-gray-400 px-3 w-full'
+ 
+  const fetchdata= async()=>{
+ const videolist_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${category}&key=${API_KEY}`
+
+ await fetch(videolist_url).then(response=>response.json()).then(data=>setData(data.items))
+  }
+
+  useEffect(()=>{
+    fetchdata()
+  },[category])
+  
   return (
     <div className="grid w-full min-w-0 grid-cols-1 gap-3 sm:grid-cols-3 2xl:grid-cols-3">
-        <div  className="min-w-0">
-          <Link to={`video/20/152`}>
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail1} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p> 
+        {data.map((item , index)=>{
+return( <div  className="min-w-0">
+          <Link to={`video/${item.snippet.categoryId}/${item.id}`}>
+            <img className="aspect-video w-full rounded-xl object-cover" src={item.snippet.thumbnails.medium.url} alt="" />
+            <h2 className={videoname}>{item.snippet.title}</h2>
+            <h3 className={channel}>{item.snippet.channelTitle}</h3>
+            <p className={views}>{value_converter(item.statistics.viewCount)} views : {item.snippet.publishedAt} ago</p> 
             </Link>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail2} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3  className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail3} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail4} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail5} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail6} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail7} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
-         <div className="min-w-0">
-            <img className="aspect-video w-full rounded-xl object-cover" src={thumbnail8} alt="" />
-            <h2 className={videoname}>Best Codiing Tutorial</h2>
-            <h3 className={channel}>CodeHash</h3>
-            <p className={views}>30k views 2days ago</p>
-        </div>
+        </div>)
+        })}
+       
     </div>
   )
 }
