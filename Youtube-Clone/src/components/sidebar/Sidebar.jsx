@@ -21,8 +21,8 @@ const Sidebar = ({sidebar , category ,setCategory}) => {
     : "flex w-10 items-center justify-center transition-all duration-[500ms] cursor-pointer  transition-all duration-300";
 
   return (
-    <div
-      className={`${sidebar ? "w-60 px-5" : "w-[72px] px-4"} shrink-0  py-5 overflow-hidden transition-all duration-[500ms] shadow-[10px_0_8px_-4px_rgba(0,0,0,0.1)]`}
+    <div id="sidebar"
+      className={`fixed left-0 top-[50px] z-20 h-[calc(100vh-50px)] ${sidebar ? "w-60 px-5" : "w-[72px] px-4"} py-5 overflow-x-hidden overflow-y-auto transition-all duration-[500ms] shadow-[10px_0_8px_-4px_rgba(0,0,0,0.1)]`}
     >
       <div className="flex flex-col gap-5 border-b border-1 border-gray-200">
         <div className={`${itemClass} ${category===0?"border-b-2 border-red-500":""}`}   onClick={()=>setCategory(0)}>

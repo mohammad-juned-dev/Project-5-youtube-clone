@@ -7,3 +7,7 @@
     background-color: rgb(45, 45, 45);
     color:white;
 }
+
+#sidebar::-webkit-scrollbar {
+  display: none;
+}

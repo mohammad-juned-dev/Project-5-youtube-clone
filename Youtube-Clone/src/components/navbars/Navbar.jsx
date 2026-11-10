@@ -10,7 +10,7 @@ import logo from "../../assets/logo.png";
 import Sidebar from "../sidebar/Sidebar";
 const Navbar = ({ setSidebar }) => {
   return (
-    <nav className=" sticky top-0 w-full h-[50px] flex justify-between px-[1rem] shadow-[0_10px_8px_-4px_rgba(0,0,0,0.1)] ">
+    <nav className="sticky top-0 z-30 w-full h-[50px] flex justify-between px-[1rem] shadow-[0_10px_8px_-4px_rgba(0,0,0,0.1)]">
       <div className="flex gap-[1em] w-max  w-max p-3 items-center justify-center">
         <img
           className="h-4 w-4 cursor-pointer"
