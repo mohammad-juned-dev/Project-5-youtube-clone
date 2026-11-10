@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 import menu_icon from "../../assets/menu.png";
 import search_icon from "../../assets/search.png";
 import upload_icon from "../../assets/upload.png";
@@ -17,7 +18,7 @@ const Navbar = ({ setSidebar }) => {
           onClick={() => setSidebar((prev) => (prev === false ? true : false))}
           alt=""
         />
-        <img className="h-6 w-25 cursor-pointer" src={logo} alt="" />
+        <Link to='/'><img className="h-6 w-25 cursor-pointer" src={logo} alt="" /></Link>
       </div>
       <div className="flex gap-[1em] w-max w-max border-black border-[1px] items-center justify-center px-3 rounded-full mt-2.5 mb-2.5">
         <input
