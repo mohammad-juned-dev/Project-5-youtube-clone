@@ -9,8 +9,10 @@ import user_profile from "../../assets/user_profile.jpg";
 import { API_KEY } from "../../../data2.js";
 import moment from "moment";
 import { value_converter } from "../../data.js";
+import { useParams } from "react-router-dom";
 
-const PlayVideo = ({ videoId }) => {
+const PlayVideo = () => {
+  const {videoId} = useParams()
   const [apidata, setApidata] = useState(null);
   const [channeldata, setChanneldata] = useState(null);
   const [commentsdata, setCommentsdata] = useState([]);
@@ -23,26 +25,28 @@ const PlayVideo = ({ videoId }) => {
       .then((data) => setApidata(data.items[0]));
   };
   const fetchotherdata = async () => {
+    if (!apidata) return;
+
     const channeldetails = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apidata.snippet.channelId}&key=${API_KEY}`;
 
     await fetch(channeldetails)
       .then((res) => res.json())
-      .then((data) => setChanneldata(data.items[0]));
+      .then((data) => setChanneldata(data.items?.[0] ?? null));
 
     const commentdetails = ` https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&maxResults=50&videoId=${videoId}&key=${API_KEY}`;
 
     await fetch(commentdetails)
       .then((res) => res.json())
-      .then((data) => setCommentsdata(data.items));
+      .then((data) => setCommentsdata(data.items ?? []));
   };
 
   useEffect(() => {
     fetchapidata();
-  }, []);
+  }, [videoId]);
 
   useEffect(() => {
     fetchotherdata();
-  }, [apidata]);
+  }, [apidata, videoId]);
   return (
     <div className="basis-3/5 p-3">
       {/* <video className="w-[100%] rounded-xl" src={video1} controls autoPlay muted></video> */}
@@ -93,7 +97,7 @@ const PlayVideo = ({ videoId }) => {
         <div className="flex gap-2">
           <img
             className="rounded-full h-10 w-10 cursor-pointer"
-            src={channeldata ? channeldata.snippet.thumbnails.default.url : ""}
+            src={channeldata?.snippet?.thumbnails?.default?.url || user_profile}
             alt=""
           />
           <div className="flex flex-col ">
@@ -101,7 +105,7 @@ const PlayVideo = ({ videoId }) => {
               {apidata ? apidata.snippet.channelTitle : ""}
             </p>
             <span className="text-[10px] text-gray-400">
-              {channeldata
+              {channeldata?.statistics?.subscriberCount != null
                 ? value_converter(channeldata.statistics.subscriberCount)
                 : ""}{" "}
               Subscribers

@@ -10,7 +10,7 @@ const {videoId , categoryId}=useParams()
   return (
     <div className='flex bg-red-500 '>
       <PlayVideo  videoId={videoId}/>
-      <Recomended/>
+      <Recomended categoryId={categoryId}/>
       
     </div>
   )
